@@ -3,7 +3,6 @@ using Microsoft.Data.Sqlite;
 using System.Globalization;
 namespace habit_tracker
 {
-
     class Programm
     {
         static string connectionstring = @"Data Source=habit-Tracker.db";
@@ -11,7 +10,6 @@ namespace habit_tracker
         static void Main(string[] args)
         {
             using (var connection = new SqliteConnection(connectionstring))
-
             {
                 connection.Open();
                 var tableCmd = connection.CreateCommand();
@@ -24,8 +22,6 @@ namespace habit_tracker
 
                 tableCmd.ExecuteNonQuery();
                 connection.Close();
-
-
             }
             GetUserInput();
         }
@@ -68,15 +64,14 @@ namespace habit_tracker
                     case "4":
                         Update();
                         break;
-
+                        
                     default:
                         Console.WriteLine("Invalid command. Please type a number from 0 to 4.");
                         break;
                 }
             }
         }
-
-
+        
         private static void GetAllRecords()
         {
             Console.Clear();
@@ -106,7 +101,6 @@ namespace habit_tracker
                               //id and quantity are integers, dattime is date
                           });
                     }
-
                 }
                 else
                 {
@@ -120,9 +114,7 @@ namespace habit_tracker
                 {
                     Console.WriteLine($"{item.Id} -- Quantity: {item.Quantity} -- DATE:{item.date.ToString("dd-MM-yyyy")}");
                 }
-
             }
-
         }
 
         internal static int GetNumberInput(string message)
@@ -142,15 +134,13 @@ namespace habit_tracker
             }
 
             return finalInput;
-
         }
 
         internal static string GetDateInput()
         {
             Console.WriteLine("\n\nPlease insert the date: (Format: dd-mm-yy). Type 0 to return to main menu\n");
             string DateInput = Console.ReadLine();
-
-
+            
             if (DateInput == "0") GetUserInput();
 
             while (!DateTime.TryParseExact(DateInput, new[] { "dd-MM-yy", "dd-MM-yyyy" }, new CultureInfo("en-US"), DateTimeStyles.None, out _))
@@ -158,10 +148,8 @@ namespace habit_tracker
                 Console.WriteLine("Not all paths return a value\n\n");
                 DateInput = Console.ReadLine();
             }
-
             return DateInput;
         }
-
 
         private static void Insert()
         {
@@ -180,9 +168,7 @@ namespace habit_tracker
 
                 tableCmd.ExecuteNonQuery();
                 connection.Close();
-
             }
-
         }
 
         private static void Delete()
@@ -209,7 +195,6 @@ namespace habit_tracker
                 else
                     Console.WriteLine($"Record {recordId} deleted.");
             }
-
         }
 
         private static void Update()
@@ -226,7 +211,6 @@ namespace habit_tracker
                 var checkcmd = connection.CreateCommand();
                 checkcmd.CommandText = "SELECT EXISTS(SELECT 1 FROM drinking_water WHERE Id = @id)";
                 checkcmd.Parameters.AddWithValue("@id", recordId);
-
                 int checkquery = Convert.ToInt32(checkcmd.ExecuteScalar());
 
                 if (checkquery == 0)
@@ -235,7 +219,6 @@ namespace habit_tracker
                     connection.Close();
                     Update();
                 }
-
                 string date = GetDateInput();
 
                 int Quantity = GetNumberInput("Please insert number of glasses, no decimals allowed.\n\n");
@@ -245,29 +228,16 @@ namespace habit_tracker
 
                 tableCmd.ExecuteNonQuery();
                 connection.Close();
-
-
-
             }
         }
 
         public class Drinkingwater
         {
             public int Id { get; set; }
-
             public DateTime date { get; set; }
-
             public int Quantity { get; set; }
-
-
-
         }
-
-
-
-
     }
-
 }
 
 
